@@ -1,27 +1,6 @@
 <?php
 
-// $url = 'https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/d8y05rH0XtaSbAwEeWVyfKT0HtHZIwUdr6VMAL100hyjyl5fN5_9PVIPdw?api_key=RGAPI-2449e28a-a683-4f33-b283-0bfd40519c6d';
-// $response = file_get_contents($url);
-
-// if ($response === false) {
-//     echo 'Error fetching data.';
-// } else {
-//     $data = json_decode($response, true);
-//     $response = $data[0];
-//     ['summonerName' => $summonerName, 'wins' => $wins, 'losses' => $losses, 'rank' => $rank, 'tier' => $tier] = $response;
-//     $personal = ['summonerName' => $summonerName, 'wins' => $wins, 'losses' => $losses, 'rank' => $rank, 'tier' => $tier];
-//     echo "<pre>";
-//     $keys= array_keys($personal);
-//     $last_key =  end($keys);
-//     foreach($personal as $key => $value){
-//         if ($key === $last_key){
-//             echo "$key: $value";
-//         }else{
-//             echo "$key: $value <br>";
-//         }
-//     }
-// }
-define ( "API_KEY" , "RGAPI-2449e28a-a683-4f33-b283-0bfd40519c6d");
+define ( "API_KEY" , "YOUR_API_KEY");
 
 
 function get_account_data($name){
