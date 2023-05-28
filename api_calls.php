@@ -1,6 +1,6 @@
 <?php
 
-define ( "API_KEY" , "YOUR_API_KEY");
+define ( "API_KEY" , "YOUR KEY");
 
 
 function get_account_data($name){
@@ -39,10 +39,9 @@ function get_account_info($id) {
 
     $data = json_decode($response, true);
 
-    ['summonerName' => $summonerName, 'wins' => $wins, 'losses' => $losses, 'rank' => $rank, 'tier' => $tier] = $data[0];
+    [ 'wins' => $wins, 'losses' => $losses, 'rank' => $rank, 'tier' => $tier] = $data[0];
 
     $selected_data = [
-        'summonerName' => $summonerName,
         'wins' => $wins,
         'losses' => $losses,
         'rank' => $rank,
@@ -95,6 +94,7 @@ function get_match_info($match_id,$puuid){
     
     if ($me){
         [
+            'puuid' => $puuid,
             'championName' => $championName,
             'totalDamageDealtToChampions' => $totalDamageDealtToChampions,
             'totalDamageTaken' => $totalDamageTaken,
@@ -115,8 +115,11 @@ function get_match_info($match_id,$puuid){
             'win' => $win,
             'teamEarlySurrendered' => $teamEarlySurrendered,
         ] = $me;
+        
+        ['queueId' => $queueId, 'gameStartTimestamp' => $gameStartTimestamp] = $data['info'];
 
         $my_info =  [
+            'puuid' => $puuid,
             'championName' => $championName,
             'totalDamageDealtToChampions' => $totalDamageDealtToChampions,
             'totalDamageTaken' => $totalDamageTaken,
@@ -136,6 +139,7 @@ function get_match_info($match_id,$puuid){
             'summoner2Id' => $summoner2Id,
             'win' => $win,
             'teamEarlySurrendered' => $teamEarlySurrendered,
+            'queueId' => $queueId, 'gameStartTimestamp' => $gameStartTimestamp
         ];
 
     }
@@ -143,20 +147,27 @@ function get_match_info($match_id,$puuid){
     return $my_info;
 }
 
-echo "<pre>";
-$account_data = get_account_data(urlencode("FLACKO G"));
-var_dump($account_data);
+function load_data($name){
+    $account_data = get_account_data(urlencode($name));
 
-$account_info = get_account_info($account_data['id']);
-var_dump($account_info);
+    $account_info = get_account_info($account_data['id']);
 
-$last_matches =  get_account_matches($account_data['puuid']);
-var_dump($last_matches);
+    $last_matches =  get_account_matches($account_data['puuid']);
 
-$all_matches = [];
+    $all_matches = [];
 
-foreach($last_matches as $match){
-    $all_matches[$match] = get_match_info($match,$account_data['puuid']);
-};
+    foreach($last_matches as $match){
+        $all_matches[$match] = get_match_info($match,$account_data['puuid']);
+    };
 
-var_dump($all_matches);
+    
+    $raw_data = [
+        'account_data' => array_merge($account_data,$account_info),
+        'all_matches'  => $all_matches
+    ];
+
+    return json_encode($raw_data);
+}
+echo(load_data('FLACKO G'));
+
+$lols_names = ['ABCDEFGHIJ', 'ALASTRAEA', 'ASINUS', 'ASWANG', 'BEBEK', 'BRUTALITYX', 'CALLMEPRINCESS', 'CHLOEGRACEMORETZ', 'CWRU', 'CYBERBEAST', 'DADDYSENPAI', 'DEESNUTS', 'DETECTED', 'EKKKKKO', 'EMOTICON', 'EMPEROROFHELL', 'FUNCTION', 'GENGRULERR', 'HERMIONE', 'IAMANGEL', 'IIK1', 'KAPPUCINO', 'KIDUS', 'LITTLEASIAN', 'LLLLLLLIIIIIII', 'LLOVEHENTAI', 'LORY', 'MAEVA', 'MALZAHÁR', 'MICROMANAGER', 'NIHIL', 'NINJER', 'NOTANOOB', 'NOTTHATTOXIC', 'OOLUCIFEROO', 'PANDARIUS', 'POGGERSFISH', 'PYS', 'QUEENLARA', 'RIPDOMINION', 'SIEGEMINION', 'SINGÊD', 'SPACECROW', 'SSSSSS', 'SUNK', 'SUPERBIA', 'SYN10', 'THEGAMINGEAGLE', 'THEJØKESØNYØU', 'TICHONDRIUS', 'TYSKEREN', 'UNIQX', 'VOXMORTIS', 'WINDYGIRL', 'XXXWEEDLORDXXX', 'YÁS', 'ADEIE', 'BIGGG', 'BLINDQ', 'BOOOOO', 'CALLMEPAPICHULO', 'CATLORD', 'CHIEFDINGO', 'CRYSTALMOON', 'CRYSTALSNOW', 'DARIUS1', 'DATUM', 'DAXES', 'DEINEMUTTA', 'DICH', 'DONOTKILLME', 'DOPPELGAENGER', 'EASYMASTER', 'ELSNORRO', 'EVERDEAD', 'FINALBOSSBARD', 'FINESTRA', 'FRÖST', 'GEFALLENERENGEL', 'GUNFIGHTER', 'IDEALGAMER', 'IHAVOC', 'IMORTALL', 'KAGENOASASHIN', 'KATUM', 'KISEIJUU', 'LILNUGGET', 'LILSEEN', 'MARCOSS', 'MIMES', 'MINESTHRA', 'MOZZARELLASTICK', 'MYTHIUS', 'PALUS', 'PAULMLD', 'PRINCESSLUNAR', 'SATIRIST', 'SOULMASTER', 'SPACEANDTIME', 'SPIDERPUJS'];
